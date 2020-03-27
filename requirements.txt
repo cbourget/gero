@@ -1,0 +1,9 @@
+--index-url https://pypi.python.org/simple
+
+-e file:///home/cbourget/dev/capri/utils
+-e file:///home/cbourget/dev/capri/core
+-e file:///home/cbourget/dev/capri/falcon
+-e file:///home/cbourget/dev/gero/app
+-e file:///home/cbourget/dev/gero/api
+
+-e .[tests]
