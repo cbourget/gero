@@ -32,7 +32,7 @@ class JWTAuthStrategy(AuthStrategy):
                                 issuer=self.issuer,
                                 audience=self.audience,
                                 leeway=self.leeway)
-        except jwt.DecodeError as err:
+        except jwt.DecodeError:
             claims = {}
 
         return claims
@@ -56,6 +56,5 @@ def bootstrap(app, api):
     secret = app.settings.get('jwt.secret')
     if not secret:
         raise KeyError('JWT: No secret found. Verify your settings.')
-
 
     app.register_factory(jwt_auth_strategy_factory, AuthStrategy)

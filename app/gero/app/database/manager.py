@@ -1,9 +1,6 @@
 from sqlalchemy import (
-    Boolean,
     Column,
-    ForeignKey,
     Integer,
-    Text,
     Table
 )
 

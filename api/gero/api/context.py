@@ -1,14 +1,11 @@
 from capri.core.context import AppContext
 
-from gero.app.identity import Identity
 from gero.app.contexts.api import ApiContext as IApiContext
-from gero.app.domain.user.service import UserService
-
 from gero.api.auth.service import AuthService
 
 
 class ApiContext(AppContext, IApiContext):
-    
+
     def __init__(self, settings, providers, request):
         super().__init__(settings, providers)
         self._request = request

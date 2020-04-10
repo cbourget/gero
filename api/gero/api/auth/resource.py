@@ -1,5 +1,4 @@
 import falcon
-import json
 
 from gero.api.auth.service import AuthService
 from gero.api.auth.validation import validate_login, validate_password
@@ -23,12 +22,12 @@ class AuthSigninResource:
             errors.append(err.dump())
 
         if errors:
-            status = falcon.HTTP_422
+            resp.status = falcon.HTTP_422
             resp.json['errors'] = errors
             return
 
         auth_service = req.context.get_instance(AuthService)
         auth_service.signin(req, resp, resp.json, login, password)
 
-        status = falcon.HTTP_200
+        resp.status = falcon.HTTP_200
         resp.json['message'] = 'Hello!'

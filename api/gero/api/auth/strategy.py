@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class AuthStrategy(ABC):
-    
+
     @abstractmethod
     def decode_claims(self, request):
         pass

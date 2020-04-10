@@ -1,3 +1,6 @@
+from gero.api.validation import ValidationError
+
+
 def validate_login(login):
     if not login:
         raise ValidationError('login', 'Required')

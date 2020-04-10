@@ -11,5 +11,5 @@ class RootResource:
             resp.json['user'] = {
                 'id': user.id
             }
-        
+
         resp.status = falcon.HTTP_200

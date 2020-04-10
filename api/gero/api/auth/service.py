@@ -13,7 +13,9 @@ class AuthService:
     def signin(self, request, response, body, login, password):
         user = self._user_service.one_by_id(1)
         identity = Identity(user)
-        self._auth_strategy.encode_claims(request, response, body, {'user_id': user.id})
+        self._auth_strategy.encode_claims(request, response, body, {
+            'user_id': user.id
+        })
         return identity
 
     def get_identity(self, request):
