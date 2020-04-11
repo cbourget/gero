@@ -4,9 +4,8 @@ from setuptools import setup, find_packages
 
 name = 'gero.app'
 here = os.path.dirname(os.path.realpath(__file__))
-packages = [name].concat(
-    find_packages(f'{here}/{name.replace('.', '/')}')
-)
+packages = [name] + find_packages(
+    '{}/{}'.format(here, name.replace('.', '/')))
 
 install_requires = [
     'capri.utils',
