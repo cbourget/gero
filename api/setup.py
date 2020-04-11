@@ -1,7 +1,12 @@
-from setuptools import setup
-
+import os
+from setuptools import setup, find_packages
 
 name = 'gero.api'
+
+here = os.path.dirname(os.path.realpath(__file__))
+packages = [name]
+for subpackage in find_packages('{}/{}'.format(here, name.replace('.', '/'))):
+    packages.append('{}.{}'.format(name, subpackage))
 
 install_requires = [
     'pyjwt',
@@ -20,6 +25,6 @@ setup(
         'Private :: Do Not Upload to pypi server'
     ],
     namespace_packages=['gero'],
-    packages=[name],
+    packages=packages,
     install_requires=install_requires
 )
