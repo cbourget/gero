@@ -1,7 +1,12 @@
-from setuptools import setup
+import os 
 
+from setuptools import setup, find_packages
 
 name = 'gero.app'
+here = os.path.dirname(os.path.realpath(__file__))
+packages = [name].concat(
+    find_packages(f'{here}/{name.replace('.', '/')}')
+)
 
 install_requires = [
     'capri.utils',
@@ -22,12 +27,6 @@ setup(
         'Private :: Do Not Upload to pypi server'
     ],
     namespace_packages=['gero'],
-    packages=[
-        name,
-        'gero.app.contexts',
-        'gero.app.database',
-        'gero.app.domain',
-        'gero.app.utils'
-    ],
+    packages=packages,
     install_requires=install_requires
 )
