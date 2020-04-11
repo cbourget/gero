@@ -1,5 +1,6 @@
 recursive-include gero *
 recursive-include docs *
+include *.py
 include *.txt
 include *.rst
 include *.md
