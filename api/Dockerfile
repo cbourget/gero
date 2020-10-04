@@ -2,6 +2,7 @@
 FROM python:3.8.1-alpine
 
 RUN apk update && apk add --no-cache  \
+    bash \
     git \
     postgresql-dev \
     gcc \

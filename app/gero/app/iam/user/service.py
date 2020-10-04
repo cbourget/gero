@@ -1,5 +1,5 @@
-from gero.app.domain.user.model import User
-from gero.app.domain.user.store import UserStore
+from gero.app.iam.user.model import User
+from gero.app.iam.user.store import UserStore
 
 
 class UserService:
@@ -7,8 +7,12 @@ class UserService:
     def __init__(self, user_store):
         self._user_store = user_store
 
+    ## Read ##
+
     def one_by_id(self, user_id):
         return self._user_store.one_by_id(user_id)
+
+    ## CUD ##
 
     def create(self, data):
         user = User(
@@ -26,7 +30,7 @@ class UserService:
         user = User(
             user_id
         )
-        return self._user_store.delete(user)
+        self._user_store.delete(user)
 
 
 def user_service_factory(context):

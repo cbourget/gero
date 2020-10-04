@@ -1,2 +1,2 @@
 def bootstrap(app):
-    app.include('.user')
+    app.include('.data')

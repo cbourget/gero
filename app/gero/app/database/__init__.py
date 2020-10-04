@@ -20,5 +20,13 @@ def bootstrap(app):
     app.register_instance(metadata, MetaData)
     app.register_factory(database_factory, Database)
 
+    # IAM
+    app.include('.group')
+    app.include('.policy')
+    app.include('.principal')
+    app.include('.role')
     app.include('.user')
     app.include('.manager')
+
+    # Domain
+    app.include('.data')

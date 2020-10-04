@@ -12,6 +12,10 @@ class DatabaseHandler:
         self._manager.initialize()
         return 'Database initialized successfully'
 
+    def reset(self):
+        self._manager.reset()
+        return 'Database reset successfully'
+
 
 def database_handler_factory(context):
     manager = context.get_instance(DatabaseManager)
