@@ -1,20 +1,20 @@
 from abc import ABC, abstractmethod
 
 
-class IUserStore(ABC):
+class IEntityStore(ABC):
 
     @abstractmethod
-    def one_by_id(self, user_id):
+    def one_by_id(self, entity_id):
         pass
 
     @abstractmethod
-    def create(self, user):
+    def create(self, entity):
         pass
 
     @abstractmethod
-    def update(self, user):
+    def update(self, entity):
         pass
 
     @abstractmethod
-    def delete(self, user):
+    def delete(self, entity):
         pass

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class DataSourceStore(ABC):
+class IDataSourceStore(ABC):
 
     @abstractmethod
     def one_by_id(self, data_source_id):

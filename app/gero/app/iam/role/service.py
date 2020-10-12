@@ -1,4 +1,4 @@
-from gero.app.iam.role.store import RoleStore
+from gero.app.iam.role.store import IRoleStore
 
 
 class RoleService:
@@ -16,7 +16,7 @@ class RoleService:
 
 
 def role_service_factory(context):
-    role_store = context.get_instance(RoleStore)
+    role_store = context.get_instance(IRoleStore)
     return RoleService(role_store)
 
 

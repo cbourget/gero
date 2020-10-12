@@ -21,6 +21,7 @@ def bootstrap(app):
     app.register_factory(database_factory, Database)
 
     # IAM
+    app.include('.entity')
     app.include('.group')
     app.include('.policy')
     app.include('.principal')

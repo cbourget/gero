@@ -1,11 +1,13 @@
+from gero.app.iam.principal.service import PrincipalService
 from gero.app.iam.user.model import User
-from gero.app.iam.user.store import UserStore
+from gero.app.iam.user.store import IUserStore
 
 
 class UserService:
 
-    def __init__(self, user_store):
+    def __init__(self, user_store, principal_service):
         self._user_store = user_store
+        self._principal_service = principal_service
 
     ## Read ##
 
@@ -15,8 +17,12 @@ class UserService:
     ## CUD ##
 
     def create(self, data):
+        principal = self._principal_service.create({
+            'id': data['id'],
+            'type': 'user'
+        })
         user = User(
-            data['id']
+            principal.id
         )
         return self._user_store.create(user)
 
@@ -31,11 +37,13 @@ class UserService:
             user_id
         )
         self._user_store.delete(user)
+        self._principal_service.delete(user_id)
 
 
 def user_service_factory(context):
-    user_store = context.get_instance(UserStore)
-    return UserService(user_store)
+    user_store = context.get_instance(IUserStore)
+    principal_service = context.get_instance(PrincipalService)
+    return UserService(user_store, principal_service)
 
 
 def bootstrap(app):

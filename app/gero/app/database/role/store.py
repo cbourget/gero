@@ -3,10 +3,10 @@ from sqlalchemy.sql import select
 from capri.alchemy.database import Database
 
 from gero.app.iam.role.model import Role
-from gero.app.iam.role.store import RoleStore
+from gero.app.iam.role.store import IRoleStore
 
 
-class DatabaseRoleStore(RoleStore):
+class RoleStore(IRoleStore):
 
     def __init__(self, database, role_table, principal_role_table):
         self._database = database
@@ -86,7 +86,7 @@ class DatabaseRoleStore(RoleStore):
         self._database.execute(delete)
 
 
-def database_role_store_factory(context):
+def role_store_factory(context):
     database = context.get_instance(Database)
     role_table_name = context.settings.get(
         'database.table.role')
@@ -94,8 +94,8 @@ def database_role_store_factory(context):
     principal_role_table_name = context.settings.get(
         'database.table.principal_role')
     principal_role_table = database.metadata.tables[principal_role_table_name]
-    return DatabaseRoleStore(database, role_table, principal_role_table)
+    return RoleStore(database, role_table, principal_role_table)
 
 
 def bootstrap(app):
-    app.register_factory(database_role_store_factory, RoleStore)
+    app.register_factory(role_store_factory, IRoleStore)

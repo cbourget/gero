@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class PrincipalStore(ABC):
+class IPrincipalStore(ABC):
 
     @abstractmethod
     def one_by_id(self, principal_id):

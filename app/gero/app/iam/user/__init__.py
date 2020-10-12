@@ -1,4 +1,3 @@
-from gero.app.iam.principal.service import PrincipalService
 from gero.app.iam.user.service import UserService
 
 
@@ -8,16 +7,8 @@ def get_user(context, user_id):
 
 
 def create_user(context, data):
-    principal_service = context.get_instance(PrincipalService)
     user_service = context.get_instance(UserService)
-
-    principal = principal_service.create({
-        'id': data['id'],
-        'type': 'user'
-    })
-    return user_service.create({
-        'id': principal.id
-    })
+    return user_service.create(data)
 
 
 def update_user(context, data):
@@ -26,10 +17,8 @@ def update_user(context, data):
 
 
 def delete_user(context, user_id):
-    principal_service = context.get_instance(PrincipalService)
     user_service = context.get_instance(UserService)
     user_service.delete(user_id)
-    principal_service.delete(user_id)
 
 
 def bootstrap(app):

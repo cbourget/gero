@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class GroupStore(ABC):
+class IGroupStore(ABC):
 
     @abstractmethod
     def one_by_id(self, group_id):

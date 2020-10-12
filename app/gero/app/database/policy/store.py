@@ -4,10 +4,10 @@ from sqlalchemy.sql import select
 from capri.alchemy.database import Database
 
 from gero.app.iam.policy.model import Policy
-from gero.app.iam.policy.store import PolicyStore
+from gero.app.iam.policy.store import IPolicyStore
 
 
-class DatabasePolicyStore(PolicyStore):
+class PolicyStore(IPolicyStore):
 
     def __init__(self, database, policy_table, role_policy_table):
         self._database = database
@@ -117,7 +117,7 @@ class DatabasePolicyStore(PolicyStore):
         self._database.execute(delete)
 
 
-def database_policy_store_factory(context):
+def policy_store_factory(context):
     database = context.get_instance(Database)
     policy_table_name = context.settings.get(
         'database.tables.policy')
@@ -125,8 +125,8 @@ def database_policy_store_factory(context):
     role_policy_table_name = context.settings.get(
         'database.tables.role_policy')
     role_policy_table = database.metadata.tables[role_policy_table_name]
-    return DatabasePolicyStore(database, policy_table, role_policy_table)
+    return PolicyStore(database, policy_table, role_policy_table)
 
 
 def bootstrap(app):
-    app.register_factory(database_policy_store_factory, PolicyStore)
+    app.register_factory(policy_store_factory, IPolicyStore)

@@ -27,6 +27,7 @@ class DatabaseManager:
             self._create_group_table(c)
             self._create_user_table(c)
             self._create_user_group_table(c)
+            self._create_entity_table(c)
             self._create_data_source_table(c)
             self._create_data_source_principal_table(c)
 
@@ -195,6 +196,20 @@ class DatabaseManager:
                 primary_key=True),
             Column(
                 'attribution',
+                Text,
+                nullable=False))
+        table.create(connection)
+
+    def _create_entity_table(self, connection):
+        table = Table(
+            self._mapper['ebtity'],
+            self._database.metadata,
+            Column(
+                'id',
+                Integer,
+                primary_key=True),
+            Column(
+                'type',
                 Text,
                 nullable=False))
         table.create(connection)

@@ -1,5 +1,5 @@
 from gero.app.iam.principal.model import Principal
-from gero.app.iam.principal.store import PrincipalStore
+from gero.app.iam.principal.store import IPrincipalStore
 
 
 class PrincipalService:
@@ -37,7 +37,7 @@ class PrincipalService:
 
 
 def principal_service_factory(context):
-    principal_store = context.get_instance(PrincipalStore)
+    principal_store = context.get_instance(IPrincipalStore)
     return PrincipalService(principal_store)
 
 

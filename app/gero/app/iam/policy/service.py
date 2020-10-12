@@ -1,4 +1,4 @@
-from gero.app.iam.policy.store import PolicyStore
+from gero.app.iam.policy.store import IPolicyStore
 
 
 class PolicyService:
@@ -16,7 +16,7 @@ class PolicyService:
 
 
 def policy_service_factory(context):
-    policy_store = context.get_instance(PolicyStore)
+    policy_store = context.get_instance(IPolicyStore)
     return PolicyService(policy_store)
 
 

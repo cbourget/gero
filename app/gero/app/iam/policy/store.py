@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class PolicyStore(ABC):
+class IPolicyStore(ABC):
 
     @abstractmethod
     def one_by_id(self, policy_id):

@@ -10,6 +10,7 @@ DEFAULT_TABLES_NAMES = {
     'group': 'groups',
     'user': 'users',
     'user_group': 'users_groups',
+    'entity': 'entities',
     'data_source': 'data_sources',
     'data_source_principal': 'data_sources_principals'
 }

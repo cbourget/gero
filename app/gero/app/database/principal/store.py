@@ -3,10 +3,10 @@ from sqlalchemy.sql import select
 from capri.alchemy.database import Database
 
 from gero.app.iam.principal.model import Principal
-from gero.app.iam.principal.store import PrincipalStore
+from gero.app.iam.principal.store import IPrincipalStore
 
 
-class DatabasePrincipalStore(PrincipalStore):
+class PrincipalStore(IPrincipalStore):
 
     def __init__(self, database, principal_table):
         self._database = database
@@ -60,13 +60,13 @@ class DatabasePrincipalStore(PrincipalStore):
         self._database.execute(delete)
 
 
-def database_principal_store_factory(context):
+def principal_store_factory(context):
     database = context.get_instance(Database)
     principal_table_name = context.settings.get(
         'database.tables.principal')
     principal_table = database.metadata.tables[principal_table_name]
-    return DatabasePrincipalStore(database, principal_table)
+    return PrincipalStore(database, principal_table)
 
 
 def bootstrap(app):
-    app.register_factory(database_principal_store_factory, PrincipalStore)
+    app.register_factory(principal_store_factory, IPrincipalStore)

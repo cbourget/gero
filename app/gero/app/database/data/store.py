@@ -4,11 +4,11 @@ from capri.alchemy.database import Database
 from capri.core.injector import InjectionError
 
 from gero.app.domain.data.model import DataSource
-from gero.app.domain.data.store import DataSourceStore
+from gero.app.domain.data.store import IDataSourceStore
 from gero.app.utils import middleware
 
 
-class DatabaseDataSourceStore(DataSourceStore):
+class DataSourceStore(IDataSourceStore):
 
     def __init__(
         self,
@@ -16,6 +16,7 @@ class DatabaseDataSourceStore(DataSourceStore):
         data_source_table,
         middlewares=None,
         identity=None):
+
         self._database = database
         self._data_source_table = data_source_table
         self._middlewares = middlewares if middlewares is not None else []
@@ -75,7 +76,7 @@ class DatabaseDataSourceStore(DataSourceStore):
         self._database.execute(delete)
 
 
-def database_data_source_store_factory(context):
+def data_source_store_factory(context):
     database = context.get_instance(Database)
     data_source_table_name = context.settings.get(
         'database.tables.data_source')
@@ -83,12 +84,12 @@ def database_data_source_store_factory(context):
 
     try:
         middlewares = [m for m, t in context.get_instance(
-            (DatabaseDataSourceStore, 'middleware'),
+            (DataSourceStore, 'middleware'),
             multi=True)]
     except InjectionError:
         middlewares = []
 
-    return DatabaseDataSourceStore(
+    return DataSourceStore(
         database,
         data_source_table,
         middlewares=middlewares,
@@ -97,5 +98,5 @@ def database_data_source_store_factory(context):
 
 def bootstrap(app):
     app.register_factory(
-        database_data_source_store_factory,
-        DataSourceStore)
+        data_source_store_factory,
+        IDataSourceStore)
