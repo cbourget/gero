@@ -1,6 +1,6 @@
 from sqlalchemy.sql import select
 
-from capri.alchemy.database import Database
+from gero.app.database import Database
 
 from gero.app.iam.principal.model import Principal
 from gero.app.iam.principal.store import IPrincipalStore
@@ -8,9 +8,9 @@ from gero.app.iam.principal.store import IPrincipalStore
 
 class PrincipalStore(IPrincipalStore):
 
-    def __init__(self, database, principal_table):
+    def __init__(self, database: Database):
         self._database = database
-        self._principal_table = principal_table
+        self._principal_table = database['principal']
 
      # Mappers
 
@@ -60,13 +60,5 @@ class PrincipalStore(IPrincipalStore):
         self._database.execute(delete)
 
 
-def principal_store_factory(context):
-    database = context.get_instance(Database)
-    principal_table_name = context.settings.get(
-        'database.tables.principal')
-    principal_table = database.metadata.tables[principal_table_name]
-    return PrincipalStore(database, principal_table)
-
-
 def bootstrap(app):
-    app.register_factory(principal_store_factory, IPrincipalStore)
+    app.register_factory(PrincipalStore, IPrincipalStore)

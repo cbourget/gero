@@ -1,6 +1,6 @@
 from sqlalchemy.sql import select
 
-from capri.alchemy.database import Database
+from gero.app.database import Database
 
 from gero.app.iam.group.model import Group, GroupUser
 from gero.app.iam.group.store import IGroupStore
@@ -8,10 +8,10 @@ from gero.app.iam.group.store import IGroupStore
 
 class GroupStore(IGroupStore):
 
-    def __init__(self, database, group_table, user_group_table):
+    def __init__(self, database: Database):
         self._database = database
-        self._group_table = group_table
-        self._user_group_table = user_group_table
+        self._group_table = database['group']
+        self._user_group_table = database['user_group']
 
     # Mappers
 
@@ -83,17 +83,5 @@ class GroupStore(IGroupStore):
         )
         self._database.execute(delete)
 
-
-def group_store_factory(context):
-    database = context.get_instance(Database)
-    group_table_name = context.settings.get(
-        'database.tables.group')
-    group_table = database.metadata.tables[group_table_name]
-    user_group_table_name = context.settings.get(
-        'database.tables.user_group')
-    user_group_table = database.metadata.tables[user_group_table_name]
-    return GroupStore(database, group_table, user_group_table)
-
-
 def bootstrap(app):
-    app.register_factory(group_store_factory, IGroupStore)
+    app.register_factory(GroupStore, IGroupStore)

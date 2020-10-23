@@ -1,6 +1,6 @@
 from sqlalchemy.sql import select
 
-from capri.alchemy.database import Database
+from gero.app.database import Database
 
 from gero.app.iam.user.model import User
 from gero.app.iam.user.store import IUserStore
@@ -8,9 +8,9 @@ from gero.app.iam.user.store import IUserStore
 
 class UserStore(IUserStore):
 
-    def __init__(self, database, user_table):
+    def __init__(self, database: Database):
         self._database = database
-        self._user_table = user_table
+        self._user_table = database['user']
 
     # Mappers
 
@@ -58,13 +58,5 @@ class UserStore(IUserStore):
         )
         self._database.execute(delete)
 
-
-def user_store_factory(context):
-    database = context.get_instance(Database)
-    user_table_name = context.settings.get('database.tables.user')
-    user_table = database.metadata.tables[user_table_name]
-    return UserStore(database, user_table)
-
-
 def bootstrap(app):
-    app.register_factory(user_store_factory, IUserStore)
+    app.register_factory(UserStore, IUserStore)

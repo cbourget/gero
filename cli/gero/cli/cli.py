@@ -12,6 +12,6 @@ def main():
     context = create_cli_context(app)
     fire.Fire({
         '.'.join(token[1:]): handler
-        for handler, token in context.get_instance(CLI_HANDLER, multi=True)
+        for handler, token in context.get_instances(CLI_HANDLER)
         if handler is not None
     })

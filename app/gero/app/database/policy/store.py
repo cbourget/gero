@@ -1,7 +1,7 @@
 from sqlalchemy import or_
 from sqlalchemy.sql import select
 
-from capri.alchemy.database import Database
+from gero.app.database import Database
 
 from gero.app.iam.policy.model import Policy
 from gero.app.iam.policy.store import IPolicyStore
@@ -9,10 +9,10 @@ from gero.app.iam.policy.store import IPolicyStore
 
 class PolicyStore(IPolicyStore):
 
-    def __init__(self, database, policy_table, role_policy_table):
+    def __init__(self, database: Database):
         self._database = database
-        self._policy_table = policy_table
-        self._role_policy_table = role_policy_table
+        self._policy_table = database['policy']
+        self._role_policy_table = database['role_policy']
 
     # Mappers
 
@@ -117,16 +117,5 @@ class PolicyStore(IPolicyStore):
         self._database.execute(delete)
 
 
-def policy_store_factory(context):
-    database = context.get_instance(Database)
-    policy_table_name = context.settings.get(
-        'database.tables.policy')
-    policy_table = database.metadata.tables[policy_table_name]
-    role_policy_table_name = context.settings.get(
-        'database.tables.role_policy')
-    role_policy_table = database.metadata.tables[role_policy_table_name]
-    return PolicyStore(database, policy_table, role_policy_table)
-
-
 def bootstrap(app):
-    app.register_factory(policy_store_factory, IPolicyStore)
+    app.register_factory(PolicyStore, IPolicyStore)

@@ -6,16 +6,15 @@ from sqlalchemy import (
     ForeignKey
 )
 
-from capri.alchemy.database import Database
-
+from gero.app.database import Database
 from gero.app.contexts.cli import CliContext
 
 
 class DatabaseManager:
 
-    def __init__(self, database, mapper):
+    def __init__(self, database: Database):
         self._database = database
-        self._mapper = mapper
+        self._mapper = database.mapper
 
     def initialize(self):
         with self._database.connect() as c, c.begin():
@@ -32,26 +31,27 @@ class DatabaseManager:
             self._create_data_source_principal_table(c)
 
     def reset(self):
-        tables = [
-            self._mapper['data_source_principal'],
-            self._mapper['data_source'],
-            self._mapper['user_group'],
-            self._mapper['user'],
-            self._mapper['group'],
-            self._mapper['principal_role'],
-            self._mapper['principal'],
-            self._mapper['role_policy'],
-            self._mapper['role'],
-            self._mapper['policy']
+        keys = [
+            'data_source_principal',
+            'data_source',
+            'entity',
+            'user_group',
+            'user',
+            'group',
+            'principal_role',
+            'principal',
+            'role_policy',
+            'role',
+            'policy'
         ]
         with self._database.connect() as c, c.begin():
-            for table in tables:
+            for key in keys:
                 try:
-                    _table = self._database.metadata.tables[table]
+                    table = self._database[key]
                 except KeyError:
                     pass
                 else:
-                    _table.drop(c) 
+                    table.drop(c) 
 
     def _create_policy_table(self, connection):
         table = Table(
@@ -202,7 +202,7 @@ class DatabaseManager:
 
     def _create_entity_table(self, connection):
         table = Table(
-            self._mapper['ebtity'],
+            self._mapper['entity'],
             self._database.metadata,
             Column(
                 'id',
@@ -249,14 +249,5 @@ class DatabaseManager:
         table.create(connection)
 
 
-def database_manager_factory(context):
-    database = context.get_instance(Database)
-    mapper = context.settings.get('database.tables', {})
-    return DatabaseManager(database, mapper)
-
-
 def bootstrap(app):
-    app.register_factory(
-        database_manager_factory,
-        DatabaseManager,
-        ctx_iface=CliContext)
+    app.register_factory(DatabaseManager, ctx_iface=CliContext)

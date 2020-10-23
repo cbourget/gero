@@ -3,7 +3,7 @@ from gero.app.iam.role.store import IRoleStore
 
 class RoleService:
 
-    def __init__(self, role_store):
+    def __init__(self, role_store: IRoleStore):
         self._role_store = role_store
 
     ## Read ##
@@ -15,10 +15,5 @@ class RoleService:
         return self._role_store.get_principals_roles(principals)
 
 
-def role_service_factory(context):
-    role_store = context.get_instance(IRoleStore)
-    return RoleService(role_store)
-
-
 def bootstrap(app):
-    app.register_factory(role_service_factory, RoleService)
+    app.register_factory(RoleService)

@@ -5,10 +5,10 @@ from gero.cli.cli import CLI_HANDLER
 
 class DatabaseHandler:
 
-    def __init__(self, manager):
+    def __init__(self, manager: DatabaseManager):
         self._manager = manager
 
-    def initialize(self):
+    def init(self):
         self._manager.initialize()
         return 'Database initialized successfully'
 
@@ -17,13 +17,8 @@ class DatabaseHandler:
         return 'Database reset successfully'
 
 
-def database_handler_factory(context):
-    manager = context.get_instance(DatabaseManager)
-    return DatabaseHandler(manager)
-
-
 def bootstrap(app):
     app.register_factory(
-        database_handler_factory,
+        DatabaseHandler,
         (CLI_HANDLER, 'database'),
         ctx_iface=CliContext)

@@ -5,7 +5,11 @@ from gero.app.iam.group.store import IGroupStore
 
 class GroupService:
 
-    def __init__(self, group_store, principal_service):
+    def __init__(
+        self,
+        group_store: IGroupStore,
+        principal_service: PrincipalService):
+
         self._group_store = group_store
         self._principal_service = principal_service
 
@@ -13,6 +17,9 @@ class GroupService:
 
     def one_by_id(self, group_id):
         return self._group_store.one_by_id(group_id)
+
+    def get_user_groups(self, user):
+        return self._group_store.get_user_groups(user)
 
     ## CUD ##
 
@@ -40,11 +47,5 @@ class GroupService:
         self._principal_service.delete(group_id)
 
 
-def group_service_factory(context):
-    group_store = context.get_instance(IGroupStore)
-    principal_service = context.get_instance(PrincipalService)
-    return GroupService(group_store, principal_service)
-
-
 def bootstrap(app):
-    app.register_factory(group_service_factory, GroupService)
+    app.register_factory(GroupService)

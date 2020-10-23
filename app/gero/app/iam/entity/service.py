@@ -4,7 +4,7 @@ from gero.app.iam.entity.store import IEntityStore
 
 class EntityService:
 
-    def __init__(self, entity_store):
+    def __init__(self, entity_store: IEntityStore):
         self._entity_store = entity_store
 
     ## Read ##
@@ -36,10 +36,5 @@ class EntityService:
         self._entity_store.delete(entity)
 
 
-def entity_service_factory(context):
-    entity_store = context.get_instance(IEntityStore)
-    return EntityService(entity_store)
-
-
 def bootstrap(app):
-    app.register_factory(entity_service_factory, EntityService)
+    app.register_factory(EntityService)

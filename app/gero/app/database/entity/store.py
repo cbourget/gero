@@ -1,6 +1,6 @@
 from sqlalchemy.sql import select
 
-from capri.alchemy.database import Database
+from gero.app.database import Database
 
 from gero.app.iam.entity.model import Entity
 from gero.app.iam.entity.store import IEntityStore
@@ -8,9 +8,9 @@ from gero.app.iam.entity.store import IEntityStore
 
 class EntityStore(IEntityStore):
 
-    def __init__(self, database, entity_table):
+    def __init__(self, database: Database):
         self._database = database
-        self._entity_table = entity_table
+        self._entity_table = database['entity']
 
      # Mappers
 
@@ -60,13 +60,5 @@ class EntityStore(IEntityStore):
         self._database.execute(delete)
 
 
-def entity_store_factory(context):
-    database = context.get_instance(Database)
-    entity_table_name = context.settings.get(
-        'database.tables.entity')
-    entity_table = database.metadata.tables[entity_table_name]
-    return EntityStore(database, entity_table)
-
-
 def bootstrap(app):
-    app.register_factory(entity_store_factory, IEntityStore)
+    app.register_factory(EntityStore, IEntityStore)

@@ -1,13 +1,28 @@
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.engine import Engine
 
-from capri.alchemy.database import Database
+from capri.alchemy.database import Database as CapriDatabase
+
+
+class Database(CapriDatabase):
+
+    def __init__(self, engine, metadata, mapper):
+        super().__init__(engine, metadata)
+        self.mapper = mapper
+
+    def __getitem__(self, key):
+        return self.get_table(key)
+
+    def get_table(self, key):
+        table_name = self.mapper[key]
+        return self.metadata.tables[table_name] 
 
 
 def database_factory(context):
     engine = context.get_instance(Engine)
     metadata = context.get_instance(MetaData)
-    return Database(engine, metadata)
+    mapper = context.settings.get('database.tables', {})
+    return Database(engine, metadata, mapper)
 
 
 def bootstrap(app):
@@ -20,6 +35,8 @@ def bootstrap(app):
     app.register_instance(metadata, MetaData)
     app.register_factory(database_factory, Database)
 
+    app.include('.manager')
+
     # IAM
     app.include('.entity')
     app.include('.group')
@@ -27,7 +44,6 @@ def bootstrap(app):
     app.include('.principal')
     app.include('.role')
     app.include('.user')
-    app.include('.manager')
 
     # Domain
     app.include('.data')

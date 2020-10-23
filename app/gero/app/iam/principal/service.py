@@ -4,7 +4,7 @@ from gero.app.iam.principal.store import IPrincipalStore
 
 class PrincipalService:
 
-    def __init__(self, principal_store):
+    def __init__(self, principal_store: IPrincipalStore):
         self._principal_store = principal_store
 
     ## Read ##
@@ -36,10 +36,5 @@ class PrincipalService:
         self._principal_store.delete(principal)
 
 
-def principal_service_factory(context):
-    principal_store = context.get_instance(IPrincipalStore)
-    return PrincipalService(principal_store)
-
-
 def bootstrap(app):
-    app.register_factory(principal_service_factory, PrincipalService)
+    app.register_factory(PrincipalService)

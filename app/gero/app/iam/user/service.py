@@ -5,7 +5,11 @@ from gero.app.iam.user.store import IUserStore
 
 class UserService:
 
-    def __init__(self, user_store, principal_service):
+    def __init__(
+        self,
+        user_store: IUserStore,
+        principal_service: PrincipalService):
+
         self._user_store = user_store
         self._principal_service = principal_service
 
@@ -40,11 +44,5 @@ class UserService:
         self._principal_service.delete(user_id)
 
 
-def user_service_factory(context):
-    user_store = context.get_instance(IUserStore)
-    principal_service = context.get_instance(PrincipalService)
-    return UserService(user_store, principal_service)
-
-
 def bootstrap(app):
-    app.register_factory(user_service_factory, UserService)
+    app.register_factory(UserService)

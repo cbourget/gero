@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class RoleStore(ABC):
+class IRoleStore(ABC):
 
     @abstractmethod
     def one_by_id(self, role_id):

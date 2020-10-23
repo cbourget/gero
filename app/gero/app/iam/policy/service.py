@@ -3,7 +3,7 @@ from gero.app.iam.policy.store import IPolicyStore
 
 class PolicyService:
 
-    def __init__(self, policy_store):
+    def __init__(self, policy_store: IPolicyStore):
         self._policy_store = policy_store
 
     ## Read ##
@@ -15,10 +15,5 @@ class PolicyService:
         return self._policy_store.get_roles_policies(roles)
 
 
-def policy_service_factory(context):
-    policy_store = context.get_instance(IPolicyStore)
-    return PolicyService(policy_store)
-
-
 def bootstrap(app):
-    app.register_factory(policy_service_factory, PolicyService)
+    app.register_factory(PolicyService)

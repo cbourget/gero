@@ -6,7 +6,12 @@ from gero.api.auth.strategy import AuthStrategy
 
 class AuthService:
 
-    def __init__(self, auth_strategy, user_service, identity_service):
+    def __init__(
+        self,
+        auth_strategy: AuthStrategy,
+        user_service: UserService,
+        identity_service: IdentityService):
+
         self._auth_strategy = auth_strategy
         self._user_service = user_service
         self._identity_service = identity_service
@@ -28,12 +33,5 @@ class AuthService:
         return self._identity_service.get_user_identity(user)
 
 
-def auth_service_factory(context):
-    auth_strategy = context.get_instance(AuthStrategy)
-    user_service = context.get_instance(UserService)
-    identity_service = context.get_instance(IdentityService)
-    return AuthService(auth_strategy, user_service, identity_service)
-
-
 def bootstrap(app, api):
-    app.register_factory(auth_service_factory, AuthService)
+    app.register_factory(AuthService)

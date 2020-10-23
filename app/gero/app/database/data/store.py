@@ -1,6 +1,6 @@
 from sqlalchemy.sql import select
 
-from capri.alchemy.database import Database
+from gero.app.database import Database
 from capri.core.injector import InjectionError
 
 from gero.app.domain.data.model import DataSource
@@ -13,12 +13,11 @@ class DataSourceStore(IDataSourceStore):
     def __init__(
         self,
         database,
-        data_source_table,
         middlewares=None,
         identity=None):
 
         self._database = database
-        self._data_source_table = data_source_table
+        self._data_source_table = database['data_source']
         self._middlewares = middlewares if middlewares is not None else []
         self._identity = identity
 
@@ -78,25 +77,18 @@ class DataSourceStore(IDataSourceStore):
 
 def data_source_store_factory(context):
     database = context.get_instance(Database)
-    data_source_table_name = context.settings.get(
-        'database.tables.data_source')
-    data_source_table = database.metadata.tables[data_source_table_name]
 
     try:
-        middlewares = [m for m, t in context.get_instance(
-            (DataSourceStore, 'middleware'),
-            multi=True)]
+        middlewares = [m for m, t in context.get_instances(
+            (DataSourceStore, 'middleware'))]
     except InjectionError:
         middlewares = []
 
     return DataSourceStore(
         database,
-        data_source_table,
         middlewares=middlewares,
         identity=context.get_identity())
 
 
 def bootstrap(app):
-    app.register_factory(
-        data_source_store_factory,
-        IDataSourceStore)
+    app.register_factory(data_source_store_factory, IDataSourceStore)
