@@ -1,0 +1,12 @@
+# git+ssh://git@github.com/cbourget/capri.git@master#egg=capri.utils&subdirectory=utils
+# git+ssh://git@github.com/cbourget/capri.git@master#egg=capri.core&subdirectory=core
+# git+ssh://git@github.com/cbourget/capri.git@master#egg=capri.alchemy&subdirectory=alchemy
+# git+ssh://git@github.com/cbourget/capri.git@master#egg=capri.falcon&subdirectory=falcon
+# git+ssh://git@github.com/cbourget/gero.git@master#egg=gero.app&subdirectory=app
+
+gunicorn
+git+https://github.com/cbourget/capri.git@master#egg=capri.utils&subdirectory=utils
+git+https://github.com/cbourget/capri.git@master#egg=capri.core&subdirectory=core
+git+https://github.com/cbourget/capri.git@master#egg=capri.alchemy&subdirectory=alchemy
+git+https://github.com/cbourget/capri.git@master#egg=capri.falcon&subdirectory=falcon
+git+https://github.com/cbourget/gero.git@deploy#egg=gero.app&subdirectory=app

@@ -14,5 +14,6 @@ class ApiContext(AppContext, IApiContext):
     def get_identity(self):
         if self._identity is None:
             auth_service = self.get_instance(AuthService)
-            self._identity = auth_service.get_identity(self._request)
+            self._identity = \
+                auth_service.get_identity_from_request(self._request)
         return self._identity

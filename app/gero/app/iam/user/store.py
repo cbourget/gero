@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class UserStore(ABC):
+class IUserStore(ABC):
 
     @abstractmethod
     def one_by_id(self, user_id):

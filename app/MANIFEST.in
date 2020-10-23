@@ -1,0 +1,13 @@
+recursive-include gero *
+recursive-include docs *
+include *.py
+include *.txt
+include *.rst
+include *.md
+include .coveragerc
+include CHANGES
+include LICENSE
+global-exclude *.mo
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__/*
